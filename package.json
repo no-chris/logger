@@ -1,0 +1,11 @@
+{
+  "name": "immo",
+  "version": "0.1.0",
+  "description": "shared immo libs",
+  "private": true,
+  "devDependencies": {
+  },
+  "dependencies": {
+    "bunyan": "^1.8.12"
+  }
+}
