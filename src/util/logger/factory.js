@@ -4,7 +4,7 @@
  * "warn" (40): A note on something that should probably be looked at by an operator eventually.
  * "info" (30): Detail on regular operation.
  * "debug" (20): Anything else, i.e. too verbose to be included in "info" level.
- * "trace" (10): Logging from external libraries used by your app or very detailed application logging.*
+ * "trace" (10): Logging from external libraries used by your app or very detailed application logging.
  */
 const _ = require('lodash');
 const bunyan = require('bunyan');
