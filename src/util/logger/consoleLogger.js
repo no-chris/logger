@@ -1,4 +1,5 @@
 const { Writable } = require('stream');
+const _ = require('lodash');
 
 /*
 Black            \e[0;30m
@@ -68,12 +69,19 @@ function levelCodeToString(code) {
     }
 }
 
+
 function consoleLoggerFactory() {
     const stream = new Writable({
-        write(chunk, encoding, done) {
-            const logEntry = JSON.parse(chunk.toString());
-            const level = levelCodeToString(logEntry.level);
-            const fullMsg = level.toUpperCase() + ': ' + logEntry.msg;
+        objectMode: true,
+        write(data, encoding, done) {
+            const name = data.name;
+            const level = levelCodeToString(data.level);
+            const msg = (data.msg)
+                ? data.msg
+                // clean bunyan default fields
+                : JSON.stringify(_.omit(data, ['hostname', 'pid', 'name', 'level', 'time', 'v', 'msg']));
+
+            const fullMsg = level.toUpperCase() + '|' + name + ': ' + msg;
 
             /* eslint-disable no-console */
             console.log(levelColors[level] + '%s' + allColors.Reset, fullMsg);

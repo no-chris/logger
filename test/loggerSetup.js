@@ -9,7 +9,7 @@ loggerFactory.setLevel(loggerFactory.DEBUG);
 
 const consoleStreamDef = {
     name: 'console',
-    type: 'stream',
+    type: 'raw',
     stream: consoleLogger.stream
 };
 

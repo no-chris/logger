@@ -106,7 +106,7 @@ describe('Console logger', function() {
             const consoleLogger = consoleLoggerFactory();
             const logger = loggerFactory('testColor', {
                 streams: [{
-                    type: 'stream',
+                    type: 'raw',
                     stream: consoleLogger.stream,
                     level: 'trace'
                 }]
