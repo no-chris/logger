@@ -7,12 +7,4 @@ const consoleLogger = consoleLoggerFactory();
 
 loggerFactory.setLevel(loggerFactory.DEBUG);
 
-const consoleStreamDef = {
-    name: 'console',
-    type: 'raw',
-    stream: consoleLogger.stream
-};
-
-if (ENABLE_CONSOLE_LOGGER) {
-    loggerFactory.registerStream(consoleStreamDef);
-}
+if (ENABLE_CONSOLE_LOGGER) { loggerFactory.registerStream(consoleLogger); }

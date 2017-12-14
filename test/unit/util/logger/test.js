@@ -104,12 +104,10 @@ describe('Console logger', function() {
     describe('Visual test', function() {
         it('should log in color!', function() {
             const consoleLogger = consoleLoggerFactory();
+            consoleLogger.level = 'trace';
+
             const logger = loggerFactory('testColor', {
-                streams: [{
-                    type: 'raw',
-                    stream: consoleLogger.stream,
-                    level: 'trace'
-                }]
+                streams: [consoleLogger]
             });
             logger.fatal('fatal');
             logger.error('error');

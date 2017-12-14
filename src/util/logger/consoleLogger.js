@@ -92,7 +92,9 @@ function consoleLoggerFactory() {
     });
 
     return {
-        stream
+        name: 'console',
+        type: 'raw',
+        stream: stream
     };
 }
 
