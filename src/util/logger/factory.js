@@ -9,6 +9,8 @@
 const _ = require('lodash');
 const bunyan = require('bunyan');
 
+let logger;
+
 let defaultLevel = bunyan.INFO;
 
 const defaultConfig = {
@@ -39,18 +41,20 @@ function loggerFactory(name, userConfig = {}) {
     if (!name) {
         throw new TypeError('A logger should have a name');
     }
+    if (!logger) {
+        const config = _.assign(
+            defaultConfig,
+            { level: defaultLevel },
+            userConfig,
+            {
+                name: 'immoLogger',
+                streams: getStreams(userConfig.streams)
+            }
+        );
+        logger = bunyan.createLogger(config);
+    }
 
-    const config = _.assign(
-        defaultConfig,
-        { level: defaultLevel },
-        userConfig,
-        {
-            name,
-            streams: getStreams(userConfig.streams)
-        }
-    );
-
-    return bunyan.createLogger(config);
+    return logger.child({ module: name });
 }
 
 loggerFactory.setLevel = function setLevel(level) {
@@ -59,6 +63,10 @@ loggerFactory.setLevel = function setLevel(level) {
 
 loggerFactory.getLevel = function getLevel() {
     return defaultLevel;
+};
+
+loggerFactory.reset = function reset() {
+    logger = null;
 };
 
 loggerFactory.FATAL = bunyan.FATAL;

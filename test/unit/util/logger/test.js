@@ -7,10 +7,12 @@ const consoleLoggerFactory = require('../../../../src/util/logger/consoleLogger'
 describe('Logger', function() {
     describe('LoggerFactory', function() {
         it('requires a logger name as a constructor parameter', function() {
+            loggerFactory.reset();
             assert.throw(() => loggerFactory(), TypeError);
         });
 
         it('should return a logger object', function() {
+            loggerFactory.reset();
             const logger = loggerFactory('test');
             assert.isFunction(logger.trace, 'returned object has a trace() function');
             assert.isFunction(logger.debug, 'returned object has a debug() function');
@@ -21,6 +23,7 @@ describe('Logger', function() {
         });
 
         it('allow to set log level', function() {
+            loggerFactory.reset();
             loggerFactory.setLevel('debug');
 
             const testLogger = testLoggerFactory();
@@ -47,6 +50,7 @@ describe('Logger', function() {
         });
 
         it('has static method to register stream', function() {
+            loggerFactory.reset();
             const testLogger = testLoggerFactory();
 
             loggerFactory.setLevel('error');
@@ -74,6 +78,7 @@ describe('Logger', function() {
 
     describe('logger instance', function() {
         it('should log to specified level', function() {
+            loggerFactory.reset();
             const testLogger = testLoggerFactory();
             const logger = loggerFactory('test', {
                 streams: [{

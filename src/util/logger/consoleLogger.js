@@ -74,14 +74,14 @@ function consoleLoggerFactory() {
     const stream = new Writable({
         objectMode: true,
         write(data, encoding, done) {
-            const name = data.name;
+            const module = data.module;
             const level = levelCodeToString(data.level);
             const msg = (data.msg)
                 ? data.msg
                 // clean bunyan default fields
                 : JSON.stringify(_.omit(data, ['hostname', 'pid', 'name', 'level', 'time', 'v', 'msg']));
 
-            const fullMsg = level.toUpperCase() + '|' + name + ': ' + msg;
+            const fullMsg = level.toUpperCase() + '|' + module + ': ' + msg;
 
             /* eslint-disable no-console */
             console.log(levelColors[level] + '%s' + allColors.Reset, fullMsg);
