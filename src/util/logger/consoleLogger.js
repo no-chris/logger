@@ -85,6 +85,9 @@ function consoleLoggerFactory() {
 
             /* eslint-disable no-console */
             console.log(levelColors[level] + '%s' + allColors.Reset, fullMsg);
+            if (data.err) {
+                console.log(levelColors[level] + data.err.stack + allColors.Reset);
+            }
             /* eslint-enable no-console */
 
             done();
