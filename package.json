@@ -1,5 +1,5 @@
 {
-  "name": "@no-chris/logger",
+  "name": "@touffi/logger",
   "version": "0.1.0",
   "description": "bunyan wrapper",
   "main": "src/factory.js",
