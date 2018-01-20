@@ -1,8 +1,8 @@
 // Change see to see logs in tests
-const ENABLE_CONSOLE_LOGGER = true;
+const ENABLE_CONSOLE_LOGGER = false;
 
-const loggerFactory = require('../src/util/logger/factory');
-const consoleLoggerFactory = require('../src/util/logger/consoleLogger');
+const loggerFactory = require('../src/factory');
+const consoleLoggerFactory = require('../src/consoleLogger');
 const consoleLogger = consoleLoggerFactory();
 
 loggerFactory.setLevel(loggerFactory.DEBUG);

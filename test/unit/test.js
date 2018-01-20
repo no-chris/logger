@@ -1,8 +1,8 @@
 const { assert } = require('chai');
 
-const loggerFactory = require('../../../../src/util/logger/factory');
+const loggerFactory = require('../../src/factory');
 const testLoggerFactory = require('./testLogger');
-const consoleLoggerFactory = require('../../../../src/util/logger/consoleLogger');
+const consoleLoggerFactory = require('../../src/consoleLogger');
 
 describe('Logger', function() {
     describe('LoggerFactory', function() {

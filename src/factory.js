@@ -47,7 +47,7 @@ function loggerFactory(name, userConfig = {}) {
             { level: defaultLevel },
             userConfig,
             {
-                name: 'immoLogger',
+                name: 'rootLogger',
                 streams: getStreams(userConfig.streams)
             }
         );
@@ -56,31 +56,35 @@ function loggerFactory(name, userConfig = {}) {
 
     const childLogger = logger.child({ module: name });
 
-    // prevent "attempt to log with an unbound log method" error
+    // prevent error "attempt to log with an unbound log method"
     childLogger.error = childLogger.error.bind(childLogger);
     childLogger.fatal = childLogger.fatal.bind(childLogger);
 
     return childLogger;
 }
 
+/**
+ * Set default level
+ * @example loggerFactory.setLevel(loggerFactory.INFO);
+ *          loggerFactory.setLevel('debug");
+ */
 loggerFactory.setLevel = function setLevel(level) {
     defaultLevel = level;
 };
 
+/**
+ * @returns the current level
+ */
 loggerFactory.getLevel = function getLevel() {
     return defaultLevel;
 };
 
+/**
+ * Delete the logger
+ */
 loggerFactory.reset = function reset() {
     logger = null;
 };
-
-loggerFactory.FATAL = bunyan.FATAL;
-loggerFactory.ERROR = bunyan.ERROR;
-loggerFactory.WARN  = bunyan.WARN;
-loggerFactory.INFO  = bunyan.INFO;
-loggerFactory.DEBUG = bunyan.DEBUG;
-loggerFactory.TRACE = bunyan.TRACE;
 
 /**
  * @param {Object} stream - see options description on {@link https://github.com/trentm/node-bunyan}
@@ -88,5 +92,15 @@ loggerFactory.TRACE = bunyan.TRACE;
 loggerFactory.registerStream = function registerStream(stream) {
     allStreams.push(stream);
 };
+
+/**
+ * Declare Bunyan constants
+ */
+loggerFactory.FATAL = bunyan.FATAL;
+loggerFactory.ERROR = bunyan.ERROR;
+loggerFactory.WARN  = bunyan.WARN;
+loggerFactory.INFO  = bunyan.INFO;
+loggerFactory.DEBUG = bunyan.DEBUG;
+loggerFactory.TRACE = bunyan.TRACE;
 
 module.exports = loggerFactory;
