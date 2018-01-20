@@ -54,7 +54,13 @@ function loggerFactory(name, userConfig = {}) {
         logger = bunyan.createLogger(config);
     }
 
-    return logger.child({ module: name });
+    const childLogger = logger.child({ module: name });
+
+    // prevent "attempt to log with an unbound log method" error
+    childLogger.error = childLogger.error.bind(childLogger);
+    childLogger.fatal = childLogger.fatal.bind(childLogger);
+
+    return childLogger;
 }
 
 loggerFactory.setLevel = function setLevel(level) {
