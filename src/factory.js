@@ -1,4 +1,13 @@
 /**
+ * @exemple
+ * LoggerFactory.setName('applicationName');
+ * LoggerFactory.setLevel(loggerFactory.INFO);
+ * LoggerFactory.registerStream({...});
+ *
+ * const logger = loggerFactory('moduleName');
+ *
+ * logger.info('well done!');
+ *
  * "fatal" (60): The service/app is going to stop or become unusable now. An operator should definitely look into this soon.
  * "error" (50): Fatal for a particular request, but the service/app continues servicing other requests. An operator should look at this soon(ish).
  * "warn" (40): A note on something that should probably be looked at by an operator eventually.
@@ -9,9 +18,9 @@
 const _ = require('lodash');
 const bunyan = require('bunyan');
 
-let logger;
-
-let defaultLevel = bunyan.INFO;
+let logger,
+    loggerName = 'myApp',
+    defaultLevel = bunyan.INFO;
 
 const defaultConfig = {
     src: false
@@ -47,7 +56,7 @@ function loggerFactory(name, userConfig = {}) {
             { level: defaultLevel },
             userConfig,
             {
-                name: 'rootLogger',
+                name: loggerName,
                 streams: getStreams(userConfig.streams)
             }
         );
@@ -62,6 +71,15 @@ function loggerFactory(name, userConfig = {}) {
 
     return childLogger;
 }
+
+/**
+ * Set the logger name.
+ * This is different from the name given to LoggerFactory(name) which names the child logger
+ * @param {String} newName
+ */
+loggerFactory.setName = function setName(newName) {
+    loggerName = newName;
+};
 
 /**
  * Set default level
