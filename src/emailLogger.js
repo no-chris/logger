@@ -93,6 +93,7 @@ module.exports = function emailLoggerFactory(mailOptions, transportOptions) {
     return {
         name: 'console',
         type: 'raw',
+        level: 50, // default level error only
         stream: new EmailStream(mailOptions, transportOptions)
     };
 };
