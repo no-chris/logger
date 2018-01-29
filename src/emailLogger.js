@@ -76,6 +76,7 @@ function formatBody(log) {
     rows.push('* hostname: ' + log.hostname);
     rows.push('* pid: ' + log.pid);
     rows.push('* time: ' + log.time);
+    rows.push('* module: ' + log.module);
 
     if (log.msg) {
         rows.push('* msg: ' + log.msg);
