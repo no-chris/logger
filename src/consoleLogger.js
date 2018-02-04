@@ -63,7 +63,7 @@ function consoleLoggerFactory() {
             const msg = (data.msg)
                 ? data.msg
                 // clean bunyan default fields
-                : JSON.stringify(_.omit(data, ['hostname', 'pid', 'name', 'level', 'time', 'v', 'msg']));
+                : JSON.stringify(_.omit(data, ['module', 'hostname', 'pid', 'name', 'level', 'time', 'v', 'msg']));
 
             const fullMsg = level.toUpperCase() + '|' + module + ': ' + msg;
 
