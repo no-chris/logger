@@ -3,74 +3,37 @@
  */
 const { Writable } = require('stream');
 const _ = require('lodash');
+const chalk = require('chalk');
 
-// taken from https://stackoverflow.com/questions/9781218/how-to-change-node-jss-console-font-color
-const allColors = {
-    Reset: '\x1b[0m',
-    Bright: '\x1b[1m',
-    Dim: '\x1b[2m',
-    Underscore: '\x1b[4m',
-    Blink: '\x1b[5m',
-    Reverse: '\x1b[7m',
-    Hidden: '\x1b[8m',
+function getColoredMsg(level, msg) {
+    const sep = chalk.grey(' | ');
 
-    FgDarkGray: '\x1b[30m',
-    FgRed: '\x1b[31m',
-    FgGreen: '\x1b[32m',
-    FgYellow: '\x1b[33m',
-    FgBlue: '\x1b[34m',
-    FgMagenta: '\x1b[35m',
-    FgCyan: '\x1b[36m',
-    FgWhite: '\x1b[37m',
-
-    BgBlack: '\x1b[40m',
-    BgRed: '\x1b[41m',
-    BgGreen: '\x1b[42m',
-    BgYellow: '\x1b[43m',
-    BgBlue: '\x1b[44m',
-    BgMagenta: '\x1b[45m',
-    BgCyan: '\x1b[46m',
-    BgWhite: '\x1b[47m'
-};
-
-const levelColors = {
-    fatal: allColors.FgRed + allColors.Underscore,
-    error: allColors.FgRed,
-    warn: allColors.FgYellow,
-    info: allColors.FgGreen,
-    debug: allColors.FgCyan,
-    trace: allColors.FgCyan
-};
-
-function levelCodeToString(code) {
-    switch (code) {
-        case 60: return 'fatal';
-        case 50: return 'error';
-        case 40: return 'warn';
-        case 30: return 'info';
-        case 20: return 'debug';
-        case 10: return 'trace';
+    switch(level) {
+        case 60: return chalk.bold.underline.red('FATAL') + sep + chalk.underline.red(msg);
+        case 50: return chalk.bold.red('ERROR') + sep + chalk.red(msg);
+        case 40: return chalk.bold.yellow(' WARN') + sep + chalk.yellow(msg);
+        case 30: return chalk.bold.green(' INFO') + sep + chalk.green(msg);
+        case 20: return chalk.bold.cyan('DEBUG') + sep + chalk.cyan(msg);
+        case 10: return chalk.bold.grey('TRACE') + sep + chalk.gray(msg);
     }
 }
-
 
 function consoleLoggerFactory() {
     const stream = new Writable({
         objectMode: true,
         write(data, encoding, done) {
             const module = data.module;
-            const level = levelCodeToString(data.level);
             const msg = (data.msg)
                 ? data.msg
                 // clean bunyan default fields
                 : JSON.stringify(_.omit(data, ['module', 'hostname', 'pid', 'name', 'level', 'time', 'v', 'msg']));
 
-            const fullMsg = level.toUpperCase() + '|' + module + ': ' + msg;
+            const fullMsg = module + ': ' + msg;
 
             /* eslint-disable no-console */
-            console.log(levelColors[level] + '%s' + allColors.Reset, fullMsg);
+            console.log(getColoredMsg(data.level, fullMsg));
             if (data.err) {
-                console.log(levelColors[level] + data.err.stack + allColors.Reset);
+                console.log(getColoredMsg(data.level, data.err.stack));
             }
             /* eslint-enable no-console */
 
